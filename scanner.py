@@ -22,6 +22,12 @@ def find_steam_root() -> Path:
 
     raise RuntimeError("Steam root not found")
 
+def get_appmanifests(steamapps_path: Path) -> list[Path]:
+    file_iterator = steamapps_path.glob("appmanifest_*.acf")
+    file_list = list(file_iterator)
+    file_list = sorted(file_list)
+    return file_list
+
 def main() -> None:
     steam_root = find_steam_root()
     print(f"Steam root: {steam_root}")
@@ -32,6 +38,13 @@ def main() -> None:
     print(f"Steamapps: {steamapps}")
     print(f"Library file: {library_vdf}")
     print(f"Exists (answer as boolean): {library_vdf.is_file()}")
+
+    steam_appmanifest = get_appmanifests(steamapps)
+    numOf_steam_appmanifest = len(steam_appmanifest)
+    print(f"Found {numOf_steam_appmanifest} appmanifests.")
+    print("These are the first 5 of them: ")
+    for path in steam_appmanifest[:5]:
+        print(f"{path}")
 
 
 if __name__ == "__main__":
