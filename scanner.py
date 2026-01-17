@@ -71,6 +71,27 @@ def parse_manifest(manifest_path) -> tuple[str, str]:
 
     return parsed_info
 
+def unwanted_app_detect(name: str) -> bool:
+    unwanted_apps = ["proton",
+                     "steam linux runtime",
+                     "redistributables",
+                     "eas anti-cheat runtime",
+                     "easyanticheat runtime",
+                     "steamworks common redistributables",
+                     "vulkan shader",
+                     "compatibility tool"]
+    lowercase = name.lower()
+    for i in unwanted_apps:
+        if i in lowercase:
+            return True
+
+    return False
+
+def classify_app(appid: str, name: str) -> str:
+    if unwanted_app_detect(name) == True:
+        return "unwant"
+    else: return "game"
+
 def main() -> None:
     steam_root = find_steam_root()
     # print(f"Steam root: {steam_root}")
@@ -88,8 +109,24 @@ def main() -> None:
     numOf_steam_appmanifest = len(steam_appmanifest)
 
     print(f"Found {numOf_steam_appmanifest} appmanifests.")
+
+    games = []
+    unwant = []
+
     for path in steam_appmanifest:
-        print(parse_manifest(path))
+        appid, name = parse_manifest(path)
+        if unwanted_app_detect(name):
+            print(f"NOISE: {name}")
+        else: print(f"GAME DETECTED: {name}")
+
+    
+        if classify_app(appid, name) == "unwant":
+            unwant.append((appid, name))
+        else: games.append((appid, name))
+
+    print(f"This is the amount of games: {len(games)}")
+    print(f"This is the amount of unwanted apps: {len(unwant)}")
+
 
     """
     ####### this was for debug
