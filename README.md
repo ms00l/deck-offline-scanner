@@ -148,7 +148,7 @@ Future development ideas include:
 - More granular launcher handling
 - Reduced false positives for known offline-capable games
 
-### Data Enrichment (Optional)
+### Data Enrichment
 
 - Cached ProtonDB data
 - PCGamingWiki flags
@@ -180,9 +180,3 @@ The current architecture supports all of these without major refactoring.
 - Anyone curious about their library’s offline reliability
 
 ---
-
-## Status
-
-Actively developed  
-Functional and usable  
-Heuristics evolving
